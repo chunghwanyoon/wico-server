@@ -1,13 +1,32 @@
-import * as crypto from 'crypto';
-import 'dotenv/config';
+import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 export class Crypto {
+  private ALGORITHM = 'aes-256-ctr';
   private HASHING_KEY = process.env.HASHING_KEY;
-  private ALGORITHM = 'sha1';
 
-  public async encrypt(string: string): Promise<string> {
-    return crypto.createHmac(this.ALGORITHM, this.HASHING_KEY).update(string).digest('base64');
+  cipher(): any {
+    const iv = randomBytes(16);
+    return createCipheriv(this.ALGORITHM, this.HASHING_KEY, iv);
   }
 
-  public async decrypt(string: string): Promise<void> {}
+  decipher(): any {
+    const iv = randomBytes(16);
+    return createDecipheriv(this.ALGORITHM, this.HASHING_KEY, iv);
+  }
+
+  async encrypt(payload: any): Promise<Buffer> {
+    const result = Buffer.concat([
+      this.cipher().update(payload),
+      this.cipher().final(),
+    ]);
+    return result;
+  }
+
+  async decrypt(payload: Buffer): Promise<any> {
+    const result = Buffer.concat([
+      this.decipher().update(payload),
+      this.decipher().final(),
+    ])
+    return result;
+  }
 }
