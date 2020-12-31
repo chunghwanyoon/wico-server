@@ -3,6 +3,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import { getCustomRepository } from 'typeorm';
 import { User, UserStatus, UserType } from '../entity/user.entity';
 import { UserHandler } from '../repositories/user.handler';
+import { SignUpDto } from '../auth/dto/SignUpDto';
 import { WicoException } from '../exceptions/wico.exception';
 import { HttpStatus } from '@nestjs/common';
 
@@ -25,6 +26,12 @@ export class UserService {
   async getUserForLogin(email: string): Promise<User> {
     const user: User = await this.users.findUserByEmail(email);
     if (!user) throw new WicoException('인증정보를 다시 확인해주시요', HttpStatus.UNAUTHORIZED);
+    return user;
+  }
+
+  @Transactional()
+  async signUp(params: SignUpDto, key: string, iv: string): Promise<User> {
+    const user: User = await this.users.buildUser(params, key, iv);
     return user;
   }
 }

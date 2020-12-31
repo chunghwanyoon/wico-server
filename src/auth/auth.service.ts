@@ -2,18 +2,27 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
 import { User, UserType, UserStatus } from '../entity/user.entity';
 import { BaseAuthModule } from '../libs/auth/BaseAuthModule';
+import { SignUpDto } from './dto/SignUpDto';
+import { LoginResponseData } from '../api/responses/auth/LoginResponse';
 
 @Injectable()
 export class AuthService {
   constructor(private users: UserService, private auth: BaseAuthModule) {}
 
-  async validateUser(email: string, input_password: string): Promise<Partial<User> | undefined> {
+  async validateUser(email: string, input_password: string): Promise<LoginResponseData> {
     const user: User = await this.users.getUserForLogin(email);
-    const hash = await this.auth.hash(input_password);
-    if (user && hash === input_password) {
-      const { password, ...userInfo } = user;
-      return userInfo;
+    const rehash = await this.auth.rehash(input_password, user.user_secret.key, user.user_secret.iv);
+    if (user && rehash === user.password) {
+      const token: string = await this.auth.token({ username: user.name, sub: user.id });
+      return { user: user, token: token };
     }
     return undefined;
+  }
+
+  async signup(params: SignUpDto): Promise<User> {
+    const { password, ...userInfo } = params;
+    const { result, key, iv } = await this.auth.hash(password);
+    const user: User = await this.users.signUp({ ...userInfo, password: result }, key, iv);
+    return user;
   }
 }

@@ -1,5 +1,5 @@
 import { ApiTags, ApiBody, ApiCreatedResponse } from '@nestjs/swagger';
-import { Controller, Get, Post, Request, Req, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, Req, Param, UseGuards, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { LoginDto } from './dto/LoginDto';
@@ -17,14 +17,18 @@ export class AuthController {
   @ApiCreatedResponse({ description: '성공', type: LoginResponse })
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Request() params: LoginDto): Promise<LoginResponse> {
-    return;
+  async login(@Body() params: LoginDto) {
+    const result = await this.service.validateUser(params.email, params.password);
+    const { password, user_secret, ...userInfo } = result.user;
+    return { code: 201, message: '안전하게 로그인 되었습니다', data: { ...result, user: userInfo } };
   }
 
   @ApiBody({ type: SignUpDto })
   @ApiCreatedResponse({ description: '성공', type: SignUpResponse })
   @Post('signup')
-  async signUp(@Request() params: SignUpDto) {
-    return;
+  async signUp(@Body() params: SignUpDto) {
+    const user: User = await this.service.signup(params);
+    const { user_secret, ...userInfo } = user;
+    return { code: 201, message: '정상적으로 회원가입 되었습니다.', data: { user: userInfo } };
   }
 }

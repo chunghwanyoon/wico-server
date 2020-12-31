@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../../entity/user.entity';
 import { BaseResponse } from '../BaseResponse';
 
-abstract class LoginResponseData {
+export abstract class LoginResponseData {
   @ApiProperty()
   user: User;
   @ApiProperty()

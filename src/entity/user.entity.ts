@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserSecret } from './user_secret.entity';
 
 export enum UserStatus {
   'WAINING_AUTH',
@@ -20,6 +21,9 @@ export class User {
   id: number;
 
   /* relations */
+  @OneToOne(() => UserSecret, (user_secret) => user_secret.user, { cascade: true })
+  @JoinColumn({ name: 'user_secret_id', referencedColumnName: 'id' })
+  user_secret: UserSecret;
 
   /* properties */
   @ApiProperty()
