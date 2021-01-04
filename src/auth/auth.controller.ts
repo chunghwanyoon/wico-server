@@ -19,7 +19,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() params: LoginDto) {
     const result = await this.service.validateUser(params.email, params.password);
-    const { password, user_secret, ...userInfo } = result.user;
+    const { password, auth_secret, ...userInfo } = result.user;
     return { code: 201, message: '안전하게 로그인 되었습니다', data: { ...result, user: userInfo } };
   }
 
@@ -28,7 +28,7 @@ export class AuthController {
   @Post('signup')
   async signUp(@Body() params: SignUpDto) {
     const user: User = await this.service.signup(params);
-    const { user_secret, ...userInfo } = user;
+    const { password, auth_secret, ...userInfo } = user;
     return { code: 201, message: '정상적으로 회원가입 되었습니다.', data: { user: userInfo } };
   }
 }

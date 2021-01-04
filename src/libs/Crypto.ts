@@ -12,19 +12,20 @@ export class Crypto {
     const key = await this.key_in_bytes();
     const iv = randomBytes(16).toString('hex').slice(0, 16);
     const cipher = createCipheriv(this.ALGORITHM, key, iv);
-    return { cipher, key, iv };
+    return { cipher, iv };
   }
 
   async decipher(): Promise<any> {
     const key = await this.key_in_bytes();
     const iv = randomBytes(16).toString('hex').slice(0, 16);
-    return createDecipheriv(this.ALGORITHM, key, iv);
+    const decipher = createDecipheriv(this.ALGORITHM, key, iv);
+    return { decipher, iv };
   }
 
   async encrypt(payload: any): Promise<any> {
-    const { cipher, key, iv } = await this.cipher();
+    const { cipher, iv } = await this.cipher();
     const result = cipher.update(String(payload), 'utf8', 'hex') + cipher.final('hex');
-    return { result, key, iv };
+    return { result, iv };
   }
 
   async decrypt(payload: any): Promise<any> {
@@ -33,8 +34,9 @@ export class Crypto {
     return result;
   }
 
-  async verify(payload: string, key: string, iv: string): Promise<any> {
-    const cipher = createCipheriv(this.ALGORITHM, key, iv);
+  async verify(payload: string, iv: string): Promise<any> {
+    const USER_SECRET_KEY = await this.key_in_bytes();
+    const cipher = createCipheriv(this.ALGORITHM, USER_SECRET_KEY, iv);
     const result = cipher.update(String(payload), 'utf8', 'hex') + cipher.final('hex');
     return result;
   }

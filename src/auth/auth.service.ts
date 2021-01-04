@@ -11,7 +11,7 @@ export class AuthService {
 
   async validateUser(email: string, input_password: string): Promise<LoginResponseData> {
     const user: User = await this.users.getUserForLogin(email);
-    const rehash = await this.auth.rehash(input_password, user.user_secret.key, user.user_secret.iv);
+    const rehash = await this.auth.rehash(input_password, user.auth_secret);
     if (user && rehash === user.password) {
       const token: string = await this.auth.token({ username: user.name, sub: user.id });
       return { user: user, token: token };
@@ -21,8 +21,8 @@ export class AuthService {
 
   async signup(params: SignUpDto): Promise<User> {
     const { password, ...userInfo } = params;
-    const { result, key, iv } = await this.auth.hash(password);
-    const user: User = await this.users.signUp({ ...userInfo, password: result }, key, iv);
+    const { result, iv } = await this.auth.hash(password);
+    const user: User = await this.users.signUp({ ...userInfo, password: result }, iv);
     return user;
   }
 }

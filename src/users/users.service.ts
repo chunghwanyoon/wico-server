@@ -30,8 +30,8 @@ export class UserService {
   }
 
   @Transactional()
-  async signUp(params: SignUpDto, key: string, iv: string): Promise<User> {
-    const user: User = await this.users.buildUser(params, key, iv);
+  async signUp(params: SignUpDto, auth_secret: string): Promise<User> {
+    const user: User = await this.users.buildUser(params, auth_secret);
     return user;
   }
 }

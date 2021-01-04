@@ -6,12 +6,12 @@ export class BaseAuthModule {
   private authenticator = new Authenticator();
 
   async hash(raw_password: string): Promise<any> {
-    const { result, key, iv } = await this.crypto.encrypt(raw_password);
-    return { result, key, iv };
+    const { result, iv } = await this.crypto.encrypt(raw_password);
+    return { result, iv };
   }
 
-  async rehash(password: string, key: string, iv: string): Promise<any> {
-    return this.crypto.verify(password, key, iv);
+  async rehash(password: string, iv: string): Promise<any> {
+    return this.crypto.verify(password, iv);
   }
 
   async unhash(hashed_password: string): Promise<any> {
