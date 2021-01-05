@@ -18,6 +18,7 @@ async function bootstrap() {
 
       /* app bootstrap */
       const app = await NestFactory.create(AppModule);
+      app.setGlobalPrefix('/api');
 
       /* mount Swagger API Documentation */
       const documentOptions = new BaseAPISpecifications().initializeOptions();
