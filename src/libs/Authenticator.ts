@@ -7,5 +7,7 @@ export class Authenticator {
     return this.jwt.sign(payload);
   }
 
-  async verify() {}
+  async verify(token: string): Promise<any> {
+    return this.jwt.verifyAsync(token);
+  }
 }

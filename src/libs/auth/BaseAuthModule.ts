@@ -21,4 +21,8 @@ export class BaseAuthModule {
   async token(payload: any): Promise<string> {
     return this.authenticator.accessToken(payload);
   }
+
+  async tokenVerify(token: string): Promise<any> {
+    return this.authenticator.verify(token);
+  }
 }
