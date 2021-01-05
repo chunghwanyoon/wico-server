@@ -1,4 +1,4 @@
-import { ApiTags, ApiBody, ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 import { Controller, Get, Post, Request, Req, Param, UseGuards, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -9,6 +9,7 @@ import { LoginResponse } from '../api/responses/auth/LoginResponse';
 import { SignUpResponse } from '../api/responses/auth/SignUpResponse';
 
 @ApiTags('Auth')
+@ApiResponse({ status: 200, description: '성공' })
 @Controller('auth')
 export class AuthController {
   constructor(private service: AuthService) {}

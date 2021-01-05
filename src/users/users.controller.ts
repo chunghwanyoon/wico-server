@@ -5,6 +5,7 @@ import { AuthGuard } from '../helpers/guards/auth.guard';
 
 @ApiTags('Users')
 @ApiHeader({ name: 'token', required: true })
+@ApiResponse({ status: 200, description: '성공' })
 @ApiResponse({ status: 401, description: '유효하지 않은 세션' })
 @ApiResponse({ status: 410, description: '만료된 세션' })
 @Controller('users')
