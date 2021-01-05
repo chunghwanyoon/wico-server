@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^7.5.1",
     "@nestjs/swagger": "^4.7.8",
     "bcrpyt": "^2.0.0",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "cross-env": "^7.0.3",
     "mysql": "^2.18.1",
