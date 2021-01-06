@@ -5,7 +5,7 @@ import { createConnection } from 'typeorm';
 import { initializeTransactionalContext } from 'typeorm-transactional-cls-hooked';
 import { SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { BaseAPISpecifications } from './api/Base';
+import { BaseAPISpecifications } from './api/winteriscoming/Base';
 import 'dotenv/config';
 
 async function bootstrap() {

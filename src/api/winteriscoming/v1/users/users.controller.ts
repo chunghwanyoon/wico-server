@@ -1,7 +1,7 @@
 import { ApiTags, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Controller, Get, Req, Param, UseGuards, Query } from '@nestjs/common';
 import { UserService } from './users.service';
-import { AuthGuard } from '../helpers/guards/auth.guard';
+import { AuthGuard } from '../../../../helpers/guards/auth.guard';
 
 @ApiTags('Users')
 @ApiHeader({ name: 'token', required: true })

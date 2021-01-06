@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Group } from './group.entity';
 
 export enum UserStatus {
   'WAINING_AUTH',
@@ -20,6 +21,9 @@ export class User {
   id: number;
 
   /* relations */
+  @ManyToMany(() => Group, (group) => group.users)
+  @JoinColumn({ name: 'group_id', referencedColumnName: 'id' })
+  groups: Group[];
 
   /* properties */
   @ApiProperty()

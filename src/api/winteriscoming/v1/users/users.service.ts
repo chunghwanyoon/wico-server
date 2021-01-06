@@ -1,10 +1,10 @@
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { Injectable, Scope } from '@nestjs/common';
 import { getCustomRepository } from 'typeorm';
-import { User, UserStatus, UserType } from '../entity/user.entity';
-import { UserHandler } from '../repositories/user.handler';
-import { SignUpDto } from '../auth/dto/SignUpDto';
-import { WicoException } from '../exceptions/wico.exception';
+import { User, UserStatus, UserType } from '../../../../entity/user.entity';
+import { UserHandler } from '../../../../repositories/user.handler';
+import { SignUpDto } from '../auth/dtos/SignUpDto';
+import { WicoException } from '../../../../exceptions/wico.exception';
 import { HttpStatus } from '@nestjs/common';
 
 @Injectable()

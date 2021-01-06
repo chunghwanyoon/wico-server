@@ -2,11 +2,11 @@ import { ApiTags, ApiBody, ApiCreatedResponse, ApiResponse } from '@nestjs/swagg
 import { Controller, Get, Post, Request, Req, Param, UseGuards, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { LoginDto } from './dto/LoginDto';
-import { SignUpDto } from './dto/SignUpDto';
-import { User } from '../entity/user.entity';
-import { LoginResponse } from '../api/responses/auth/LoginResponse';
-import { SignUpResponse } from '../api/responses/auth/SignUpResponse';
+import { LoginDto } from './dtos/LoginDto';
+import { SignUpDto } from './dtos/SignUpDto';
+import { User } from '../../../../entity/user.entity';
+import { LoginResponse } from '../../entities/response_entities/auth/LoginResponse';
+import { SignUpResponse } from '../../entities/response_entities/auth/SignUpResponse';
 
 @ApiTags('Auth')
 @ApiResponse({ status: 200, description: '성공' })
