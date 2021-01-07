@@ -4,40 +4,33 @@ export class Crypto {
   private ALGORITHM = 'aes-256-ctr';
   private HASHING_KEY = process.env.HASHING_KEY;
 
-  async key_in_bytes(): Promise<any> {
+  async AUTH_KEY(): Promise<string> {
     return createHash('sha256').update(String(this.HASHING_KEY)).digest('base64').substr(0, 32);
   }
 
-  async cipher(): Promise<any> {
-    const key = await this.key_in_bytes();
-    const iv = randomBytes(16).toString('hex').slice(0, 16);
-    const cipher = createCipheriv(this.ALGORITHM, key, iv);
-    return { cipher, iv };
+  async cipher(initVector: string = randomBytes(16).toString('hex').slice(0, 16)) {
+    const key = await this.AUTH_KEY();
+    const cipher = createCipheriv(this.ALGORITHM, key, initVector);
+    return { cipher, initVector };
   }
 
-  async decipher(): Promise<any> {
-    const key = await this.key_in_bytes();
-    const iv = randomBytes(16).toString('hex').slice(0, 16);
-    const decipher = createDecipheriv(this.ALGORITHM, key, iv);
-    return { decipher, iv };
+  async decipher(initVector: string) {
+    const key = await this.AUTH_KEY();
+    const decipher = createDecipheriv(this.ALGORITHM, key, initVector);
+    return { decipher, initVector };
   }
 
-  async encrypt(payload: any): Promise<any> {
-    const { cipher, iv } = await this.cipher();
-    const result = cipher.update(String(payload), 'utf8', 'hex') + cipher.final('hex');
-    return { result, iv };
+  async encrypt(payload: any) {
+    const { cipher, initVector } = await this.cipher();
+    const hashed = cipher.update(String(payload), 'utf8', 'hex') + cipher.final('hex');
+    return { hashed, initVector };
   }
 
-  async decrypt(payload: any): Promise<any> {
-    const decipher = await this.decipher();
-    const result = decipher.update(payload, 'hex', 'utf8') + decipher.final('utf8');
-    return result;
-  }
+  async decrypt(payload: any) {}
 
   async verify(payload: string, iv: string): Promise<any> {
-    const USER_SECRET_KEY = await this.key_in_bytes();
-    const cipher = createCipheriv(this.ALGORITHM, USER_SECRET_KEY, iv);
-    const result = cipher.update(String(payload), 'utf8', 'hex') + cipher.final('hex');
-    return result;
+    const { cipher, ...rest } = await this.cipher(iv);
+    const rehash = cipher.update(String(payload), 'utf8', 'hex') + cipher.final('hex');
+    return rehash;
   }
 }

@@ -6,8 +6,8 @@ export class BaseAuthModule {
   private authenticator = new Authenticator();
 
   async hash(raw_password: string): Promise<any> {
-    const { result, iv } = await this.crypto.encrypt(raw_password);
-    return { result, iv };
+    const { hashed, initVector } = await this.crypto.encrypt(raw_password);
+    return { hashed, initVector };
   }
 
   async rehash(password: string, iv: string): Promise<any> {

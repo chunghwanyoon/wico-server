@@ -21,8 +21,8 @@ export class AuthService {
 
   async signup(params: SignUpDto): Promise<User> {
     const { password, ...userInfo } = params;
-    const { result, iv } = await this.auth.hash(password);
-    const user: User = await this.users.signUp({ ...userInfo, password: result }, iv);
+    const { hashed, initVector } = await this.auth.hash(password);
+    const user: User = await this.users.signUp({ ...userInfo, password: hashed }, initVector);
     return user;
   }
 }
