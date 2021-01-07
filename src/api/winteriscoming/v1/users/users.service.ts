@@ -3,7 +3,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import { getCustomRepository } from 'typeorm';
 import { User, UserStatus, UserType } from '../../../../entity/user.entity';
 import { UserHandler } from '../../../../repositories/user.handler';
-import { SignUpDto } from '../auth/dtos/SignUpDto';
+import { SignUpDto } from '../auth/dtos/signup.dto';
 import { WicoException } from '../../../../exceptions/wico.exception';
 import { HttpStatus } from '@nestjs/common';
 

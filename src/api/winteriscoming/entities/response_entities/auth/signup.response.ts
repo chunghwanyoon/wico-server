@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseResponse } from '../BaseResponse';
+import { BaseResponse } from '../base.response';
 import { User } from '../../../../../entity/user.entity';
 
 abstract class SignUpResponseData {

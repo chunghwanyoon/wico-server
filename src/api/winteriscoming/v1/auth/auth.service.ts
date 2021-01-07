@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
 import { User, UserType, UserStatus } from '../../../../entity/user.entity';
-import { BaseAuthModule } from '../../../../libs/auth/BaseAuthModule';
-import { SignUpDto } from './dtos/SignUpDto';
-import { LoginResponseData } from '../../entities/response_entities/auth/LoginResponse';
+import { BaseAuthModule } from '../../../../libs/auth/auth.module';
+import { SignUpDto } from './dtos/signup.dto';
+import { LoginResponseData } from '../../entities/response_entities/auth/login.response';
 
 @Injectable()
 export class AuthService {

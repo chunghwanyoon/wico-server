@@ -1,7 +1,7 @@
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { EntityRepository, getCustomRepository } from 'typeorm';
 import { User, UserType, UserStatus } from '../entity/user.entity';
-import { SignUpDto } from '../api/winteriscoming/v1/auth/dtos/SignUpDto';
+import { SignUpDto } from '../api/winteriscoming/v1/auth/dtos/signup.dto';
 
 @EntityRepository(User)
 export class UserHandler extends BaseRepository<User> {

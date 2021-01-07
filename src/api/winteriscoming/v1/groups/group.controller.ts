@@ -1,8 +1,8 @@
 import { ApiCreatedResponse, ApiTags, ApiBody, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { Controller, Get, Post, Req, Param, Body, UseGuards } from '@nestjs/common';
 import { GroupService } from './group.service';
-import { EstablishResponse } from '../../entities/response_entities/group/EstablishResponse';
-import { CreateGroupDto } from './dtos/CreateGroupDto';
+import { EstablishResponse } from '../../entities/response_entities/group/establish.response';
+import { CreateGroupDto } from './dtos/group.dto';
 import { AuthGuard } from '../../../../helpers/guards/auth.guard';
 
 @ApiTags('Groups')
