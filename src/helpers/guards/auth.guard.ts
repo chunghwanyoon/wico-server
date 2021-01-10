@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { WicoException } from '../../exceptions/wico.exception';
-import { BaseAuthModule } from '../../libs/auth/auth.module';
+import { BaseAuthModule } from '../../api/winteriscoming/v1/auth/modules/auth.base';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

@@ -1,5 +1,5 @@
-import { Crypto } from '../crypto';
-import { Authenticator } from '../authenticator';
+import { Crypto } from '../../../../../libs/crypto';
+import { Authenticator } from '../../../../../libs/authenticator';
 
 export class BaseAuthModule {
   private crypto = new Crypto();
