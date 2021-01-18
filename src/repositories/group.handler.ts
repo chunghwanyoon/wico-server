@@ -1,7 +1,7 @@
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { EntityRepository, getCustomRepository } from 'typeorm';
 import { HttpStatus } from '@nestjs/common';
-import { Group, GroupStatus } from '../entity/group.entity';
+import { Group, GroupStatus, RecruitStatus } from '../entity/group.entity';
 import { User } from '../entity/user.entity';
 import { CreateGroupDto } from '../api/winteriscoming/v1/groups/dtos/group.dto';
 import { WicoException } from '../exceptions/wico.exception';
@@ -26,5 +26,10 @@ export class GroupHandler extends BaseRepository<Group> {
   async findMaster(group: Group): Promise<User> {
     const team = await this.findOne(group);
     return team.members[0];
+  }
+
+  async findRecruitingGroups(): Promise<Group[]> {
+    const groups: Group[] = await this.find({ where: { recruit_status: RecruitStatus.ACTIVE } });
+    return groups;
   }
 }

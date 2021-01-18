@@ -19,6 +19,7 @@ export class Group {
   id: number;
 
   /* relations */
+  @ApiProperty()
   @OneToMany(() => User, (user) => user.group, { eager: true })
   members: User[];
 

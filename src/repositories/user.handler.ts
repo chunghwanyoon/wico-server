@@ -1,6 +1,6 @@
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { EntityRepository, getCustomRepository } from 'typeorm';
-import { User, UserType, UserStatus } from '../entity/user.entity';
+import { User, UserType, UserStatus, UserTeamSearchStatus } from '../entity/user.entity';
 import { SignUpDto } from '../api/winteriscoming/v1/auth/dtos/signup.dto';
 
 @EntityRepository(User)
@@ -22,7 +22,12 @@ export class UserHandler extends BaseRepository<User> {
   }
 
   async buildUser(params: SignUpDto, auth_secret: string): Promise<User> {
-    const user: User = await this.save({ ...params, auth_secret});
+    const user: User = await this.save({ ...params, auth_secret });
     return user;
+  }
+
+  async findTeamJoinActiveUsers(): Promise<User[]> {
+    const users: User[] = await this.find({ where: { team_search_status: UserTeamSearchStatus.ACTIVE, group: null }})
+    return users;
   }
 }
