@@ -1,12 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from './user.entity';
 
 export enum GroupStatus {
-  'RELEASING',
-  'PROCESSING',
-  'COMPLETED',
-  'CLOSED',
+  'INACTIVE',
+  'ACTIVE',
+}
+
+export enum RecruitStatus {
+  'INACTIVE',
+  'ACTIVE',
 }
 
 @Entity({ name: 'groups' })
@@ -16,27 +19,24 @@ export class Group {
   id: number;
 
   /* relations */
-  @ManyToMany(() => User, (user) => user.groups, { cascade: true })
-  users: User[];
-
-  @ManyToMany(() => User, (user) => user.groups, { cascade: true })
-  @JoinColumn({ name: 'master_id', referencedColumnName: 'id' })
-  master: User;
+  @OneToMany(() => User, (user) => user.group, { eager: true })
+  members: User[];
 
   // tasks
   // request histories
+
   @ApiProperty()
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   name: string;
   @ApiProperty()
   @Column({ type: 'int', default: 0 })
   status: GroupStatus;
   @ApiProperty()
+  @Column({ type: 'int', default: 0 })
+  recruit_status: RecruitStatus;
+  @ApiProperty()
   @Column({ type: 'text', nullable: true })
   description: string;
-  @ApiProperty()
-  @Column({ type: 'int' })
-  term: number;
 
   @ApiProperty()
   @CreateDateColumn()

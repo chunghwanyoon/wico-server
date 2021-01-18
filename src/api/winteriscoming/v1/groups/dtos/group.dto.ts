@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateGroupDto {
@@ -11,9 +11,4 @@ export class CreateGroupDto {
   @IsNotEmpty()
   @IsString()
   public description: string;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  public term: number;
 }

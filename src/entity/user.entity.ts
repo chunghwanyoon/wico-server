@@ -14,6 +14,11 @@ export enum UserType {
   'ADMIN',
 }
 
+export enum UserTeamSearchStatus {
+  'INACTIVE',
+  'ACTIVE',
+}
+
 @Entity({ name: 'users' })
 export class User {
   @ApiProperty()
@@ -21,9 +26,9 @@ export class User {
   id: number;
 
   /* relations */
-  @ManyToOne(() => Group, (group) => group.users)
+  @ManyToOne(() => Group, (group) => group.members, { cascade: true })
   @JoinColumn({ name: 'group_id', referencedColumnName: 'id' })
-  groups: Group[];
+  group: Group;
 
   /* properties */
   @ApiProperty()
@@ -46,6 +51,9 @@ export class User {
   @ApiProperty()
   @Column({ type: 'int', default: 0 })
   status: UserStatus;
+  @ApiProperty()
+  @Column({ type: 'int', default: 0 })
+  team_search_status: UserTeamSearchStatus;
   @Column({ type: 'varchar', select: false })
   auth_secret: string;
 
