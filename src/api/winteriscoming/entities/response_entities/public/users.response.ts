@@ -3,7 +3,7 @@ import { BaseResponse } from '../base.response';
 import { User } from '../../../../../entity/user.entity';
 
 abstract class UserListResponseData {
-  @ApiProperty()
+  @ApiProperty({ isArray: true, type: () => User })
   users: User[];
 }
 

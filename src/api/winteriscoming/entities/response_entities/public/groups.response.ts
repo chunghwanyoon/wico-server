@@ -3,7 +3,7 @@ import { BaseResponse } from '../base.response';
 import { Group } from '../../../../../entity/group.entity';
 
 abstract class GroupListResponseData {
-  @ApiProperty()
+  @ApiProperty({ isArray: true, type: () => Group })
   groups: Group[];
 }
 
