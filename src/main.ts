@@ -18,12 +18,15 @@ async function bootstrap() {
 
       /* app bootstrap */
       const app = await NestFactory.create(AppModule);
-      app.setGlobalPrefix('/api');
+      app.enableCors({ origin: true });
+      app.setGlobalPrefix('/api/v1');
 
       /* mount Swagger API Documentation */
       const documentOptions = new BaseAPISpecifications().initializeOptions();
       const document = SwaggerModule.createDocument(app, documentOptions);
-      SwaggerModule.setup('api/docs', app, document);
+      SwaggerModule.setup('api/v1/docs', app, document, {
+        swaggerOptions: { defaultModelsExpandDepth: -1 },
+      });
 
       /* global pipeline for API request validations */
       app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: env, transform: true }));
