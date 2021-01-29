@@ -1,4 +1,4 @@
-import { ApiTags, ApiResponse, ApiHeader, ApiBody, ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiHeader, ApiBody, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { Controller, Get, Param, UseGuards, Post, Req, Body } from '@nestjs/common';
 import { UserService } from './users.service';
 import { AuthGuard } from '../../../../helpers/guards/auth.guard';
@@ -16,14 +16,19 @@ export class UserController {
   public service = new UserService();
   public groups = new GroupService();
 
-  @Get(':id')
-  async findUserById(@Param('id') id: number) {
-    const user = await this.service.getUserInfoById(id);
+  @Get()
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: '내정보 조회' })
+  @ApiResponse({ status: 200, description: '조회 성공' })
+  async findUserById(@Req() req: any) {
+    const userId = req.authInfo.sub;
+    const user = await this.service.getUserInfoById(userId);
     return { data: user, message: 'success' };
   }
 
   @ApiBody({ type: CreateGroupDto })
   @ApiCreatedResponse({ description: '성공', type: EstablishResponse })
+  @ApiOperation({ summary: '그룹 만들기' })
   @Post('establish')
   async createGroup(@Body() params: CreateGroupDto, @Req() req: any) {
     const userId = req.authInfo.sub;

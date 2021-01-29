@@ -1,4 +1,4 @@
-import { ApiTags, ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { Controller, Get, Post, Request, Req, Param, Body } from '@nestjs/common';
 import { PublicService } from './public.service';
 import { UserListResponse } from '../../entities/response_entities/public/users.response';
@@ -11,6 +11,7 @@ export class PublicController {
   constructor(private service: PublicService) {}
 
   @ApiCreatedResponse({ description: '성공', type: UserListResponse })
+  @ApiOperation({ summary: '신규회원 목록' })
   @Get('users')
   async lookingTeamUsers() {
     const users = await this.service.userList();
@@ -18,6 +19,7 @@ export class PublicController {
   }
 
   @ApiCreatedResponse({ description: '성공', type: GroupListResponse })
+  @ApiOperation({ summary: '신규팀 목록' })
   @Get('groups')
   async recruitingGroups() {
     const groups = await this.service.groupList();

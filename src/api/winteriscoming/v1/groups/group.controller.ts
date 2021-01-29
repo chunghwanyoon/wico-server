@@ -1,4 +1,4 @@
-import { ApiCreatedResponse, ApiTags, ApiBody, ApiResponse, ApiHeader } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags, ApiBody, ApiResponse, ApiHeader, ApiOperation } from '@nestjs/swagger';
 import { Controller, Get, Post, Req, Param, Body, UseGuards } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { EstablishResponse } from '../../entities/response_entities/group/establish.response';

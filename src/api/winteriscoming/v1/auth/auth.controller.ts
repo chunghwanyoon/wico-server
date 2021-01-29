@@ -1,4 +1,4 @@
-import { ApiTags, ApiBody, ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiCreatedResponse, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { Controller, Get, Post, Request, Req, Param, UseGuards, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -16,6 +16,7 @@ export class AuthController {
 
   @ApiBody({ type: LoginDto })
   @ApiCreatedResponse({ description: '성공', type: LoginResponse })
+  @ApiOperation({summary: '로그인 '})
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() params: LoginDto) {
@@ -26,6 +27,7 @@ export class AuthController {
 
   @ApiBody({ type: SignUpDto })
   @ApiCreatedResponse({ description: '성공', type: SignUpResponse })
+  @ApiOperation({summary: '회원가입 '})
   @Post('signup')
   async signUp(@Body() params: SignUpDto) {
     const user: User = await this.service.signup(params);
