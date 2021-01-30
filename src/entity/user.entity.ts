@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Group } from './group.entity';
+import { RequestHistory } from './request_history.entity';
+import { ScoutHistory } from './scout_history.entity';
 
 export enum UserStatus {
   'WAINING_AUTH',
@@ -29,6 +31,11 @@ export class User {
   @ManyToOne(() => Group, (group) => group.members, { cascade: true })
   @JoinColumn({ name: 'group_id', referencedColumnName: 'id' })
   group: Group;
+
+  @OneToMany(() => RequestHistory, (request_history) => request_history.user, { cascade: true })
+  request_histories: RequestHistory[];
+  @OneToMany(() => ScoutHistory, (scout_history) => scout_history.user, { cascade: true })
+  scout_histories: ScoutHistory[];
 
   /* properties */
   @ApiProperty()

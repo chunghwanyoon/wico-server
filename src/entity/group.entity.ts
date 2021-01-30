@@ -1,6 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from './user.entity';
+import { RequestHistory } from './request_history.entity';
+import { ScoutHistory } from './scout_history.entity';
 
 export enum GroupStatus {
   'INACTIVE',
@@ -23,8 +25,11 @@ export class Group {
   @OneToMany(() => User, (user) => user.group, { eager: true })
   members: User[];
 
-  // tasks
-  // request histories
+  @ApiProperty()
+  @OneToMany(() => RequestHistory, (request_history) => request_history.group, { cascade: true })
+  request_histories: RequestHistory[];
+  @OneToMany(() => ScoutHistory, (scout_history) => scout_history.group, { cascade: true })
+  scout_histories: ScoutHistory[];
 
   @ApiProperty()
   @Column({ type: 'varchar', unique: true })
